@@ -136,4 +136,5 @@ document.addEventListener("DOMContentLoaded", () => {
     calculateBtn.addEventListener("click", calculatePremiums);
     resetBtn.addEventListener("click", resetForm);
     printBtn.addEventListener("click", generatePDF);
+
 });
