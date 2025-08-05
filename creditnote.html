@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Refund Calculator</title>
+    <link rel="stylesheet" href="creditnote.css">
+</head>
+<body>
+    <div class="calculator">
+        <h1>GROUP CREDIT LIFE PREMIUM REFUND</h1>
+        <p id="currentDate"></p>
+        <div class="form-group">
+            <label for="memberName">MEMBER NAME:</label>
+            <input type="text" id="memberName" class="input-cell">
+        </div>
+        
+        <div class="form-group">
+            <label for="loanAmount">LOAN AMOUNT:</label>
+            <input type="number" id="loanAmount" class="input-cell">
+        </div>
+        
+        <div class="form-group">
+            <label for="loanIssueDate">LOAN ISSUE DATE:</label>
+            <input type="date" id="loanIssueDate" class="input-cell">
+        </div>
+        
+        <div class="form-group">
+            <label for="loanExpiryDate">LOAN EXPIRY DATE:</label>
+            <input type="date" id="loanExpiryDate" class="input-cell">
+        </div>
+        
+        <div class="form-group">
+            <label for="loanClearedDate">LOAN CLEARED DATE:</label>
+            <input type="date" id="loanClearedDate" class="input-cell">
+        </div>
+        
+        <div class="form-group">
+            <label for="premiumPaid">PREMIUM PAID:</label>
+            <input type="number" id="premiumPaid" class="input-cell">
+        </div>
+        
+        <button id="calculateBtn">Calculate Refund</button>
+        
+        <table>
+            <tr>
+                <th>Calculation</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>LOAN PERIOD (DAYS)</td>
+                <td id="loanPeriod" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>DAYS ON COVER</td>
+                <td id="daysOnCover" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>PREMIUM USED TO DATE</td>
+                <td id="premiumUsed" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>PREMIUM REFUNDABLE</td>
+                <td id="premiumRefundable" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>BANK CLAIM AMOUNT</td>
+                <td><input type="number" id="bankClaim" class="input-cell"></td>
+            </tr>
+            <tr>
+                <td>AMOUNT PAYABLE</td>
+                <td id="amountPayable" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>COMMISSION PAID</td>
+                <td id="commissionPaid" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>COMMISSION RECOVERY</td>
+                <td id="commissionRecovery" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>TOTAL RECOVERY</td>
+                <td id="totalRecovery" class="formula-cell"></td>
+            </tr>
+            <tr>
+                <td>Net payable premium</td>
+                <td id="netPayable" class="formula-cell"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="creditnote.js"></script>
+</body>
+</html>

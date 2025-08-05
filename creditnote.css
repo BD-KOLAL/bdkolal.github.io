@@ -1,0 +1,70 @@
+body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .calculator {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid #f8f7f7;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px white;
+        }
+        h1 {
+            text-align: center;
+            color: #880000;
+        }
+        .form-group {
+            margin-bottom: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 60%;
+            padding: 5px;
+            border: 1px solid #4c53af;
+            border-radius: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4c53af;
+            color: white;
+            padding: 5px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        button:hover {
+            background-color: #4c53af;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        th, td {
+            border: 1px solid #4c53af;
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #ec5656;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 5px;
+            background-color: #fdfbfb;
+            border-left: 4px solid #4CAF50;
+        }
+        .input-cell {
+            background-color: #cccfff;
+        }
+        .formula-cell {
+            background-color: #e6f3ff;
+        }
