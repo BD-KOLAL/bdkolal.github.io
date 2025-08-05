@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     // Premium calculation
-    const premiumsPerFamily = [19500, 33800, 71500, 92300, 123500, 149500];
+    const premiumsPerFamily = [1950, 3380, 7150, 9230, 12350, 14950];
     const numberInput = document.getElementById("Num");
     const calculateBtn = document.getElementById("calculateBtn");
     const resetBtn = document.getElementById("resetBtn");
