@@ -465,14 +465,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
      function saveCostingAsPDF() {
-    // Initialize jsPDF properly
-    const { jsPDF } = window.jspdf;
+    // Show loading indicator
+    const spinner = document.createElement('div');
+    spinner.className = 'pdf-spinner';
+    document.body.appendChild(spinner);
     
-    // Register the autoTable plugin
-    if (window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API.autoTable) {
-        // Plugin is available
+    try {
+        // Check if jsPDF is available
+        if (!window.jspdf) {
+            throw new Error('jsPDF library not loaded');
+        }
+        
+        const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
+        // Check if autoTable plugin is available
+        if (typeof doc.autoTable !== 'function') {
+            throw new Error('autoTable plugin not loaded');
+        }
+
         const organization = document.getElementById('organization').value || 'GLA_Costing';
         
         // Add title
@@ -488,7 +499,13 @@ document.addEventListener('DOMContentLoaded', function() {
             html: '#costingTable',
             startY: 30,
             theme: 'grid',
-            headStyles: { fillColor: [52, 152, 219] }
+            headStyles: { fillColor: [52, 152, 219] },
+            didDrawPage: function(data) {
+                // Header
+                doc.setFontSize(12);
+                doc.setTextColor(40);
+                doc.text(`Page ${data.pageCount}`, data.settings.margin.left, 10);
+            }
         });
         
         // Add summary
@@ -526,10 +543,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Save the PDF
-         doc.save(`${organization}_Costing_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
-    } else {
-        console.error('jspdf-autotable plugin not loaded');
-        alert('Error: PDF generation requires jspdf-autotable plugin. Please ensure it is loaded.');
+        doc.save(`${organization}_Costing_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
+    } catch (error) {
+        console.error('PDF generation error:', error);
+        alert(`PDF generation failed: ${error.message}. Please ensure all required libraries are loaded.`);
+    } finally {
+        // Remove loading indicator
+        document.body.removeChild(spinner);
     }
 }
 
@@ -564,3 +584,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 });
+
