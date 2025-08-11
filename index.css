@@ -86,5 +86,8 @@ a{
     text-decoration: none;
 }
 a:hover{
-    color:
+    color: rgb(18, 33, 247)
+}
+a:select{
+    color: rgb(157, 34, 228);
 }
