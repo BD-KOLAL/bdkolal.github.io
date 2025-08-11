@@ -623,13 +623,14 @@ function loadAlternativePDFLibraries() {
                 // Add first page
                 pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
                 heightLeft -= pageHeight;
+                position = -pageHeight;
 
                 // Add additional pages if needed
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
+                while (heightLeft > 0) {
                     pdf.addPage();
                     pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
                     heightLeft -= pageHeight;
+                    position -= pageHeight;
                 }
 
                 // Save the PDF
@@ -680,4 +681,4 @@ function loadAlternativeQuotationLibraries() {
     
     document.head.appendChild(script1);
 }
-
+}
