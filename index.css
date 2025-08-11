@@ -1,10 +1,67 @@
-nav{
-    background-color: rgb(0, 24, 133);
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-a{
-    background-color: white;
+
+/* Body Styling */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f4f9ff, #e1f0ff);
+    color: #333;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+/* Paragraph */
+p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #444;
+    text-align: center;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: #020c36;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(253, 117, 117, 0.15);
+}
+
+/* Navigation Links */
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+nav a {
     text-decoration: none;
-    margin: 5px;
-    padding: 5px;
-    display: grid;
+    color: white;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect */
+nav a:hover {
+    background-color: rgba(255, 161, 161, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Active Link Style (Optional) */
+nav a:active {
+    background-color: rgba(253, 151, 151, 0.4);
+}
+
+/* Responsive Navigation */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
 }
