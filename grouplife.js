@@ -464,17 +464,16 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    function saveCostingAsPDF() {
-        const { jsPDF } = window.jspdf;
-        const organization = document.getElementById('organization').value || 'GLA_Costing';
+     function saveCostingAsPDF() {
+    // Initialize jsPDF properly
+    const { jsPDF } = window.jspdf;
+    
+    // Register the autoTable plugin
+    if (window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API.autoTable) {
+        // Plugin is available
         const doc = new jsPDF();
-
-        // Make sure autoTable is available
-    if (typeof doc.autoTable !== 'function') {
-        console.error('autoTable plugin not loaded');
-        alert('PDF generation error: autoTable plugin not loaded. Please refresh the page.');
-        return;
-    }
+        
+        const organization = document.getElementById('organization').value || 'GLA_Costing';
         
         // Add title
         doc.setFontSize(18);
@@ -527,7 +526,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Save the PDF
-        doc.save(`${organization}_Costing_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
+         doc.save(`${organization}_Costing_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
+    } else {
+        console.error('jspdf-autotable plugin not loaded');
+        alert('Error: PDF generation requires jspdf-autotable plugin. Please ensure it is loaded.');
+    }
 }
 
     function saveQuotationAsPDF() {
@@ -559,4 +562,5 @@ document.addEventListener('DOMContentLoaded', function() {
             pdf.save(`${organization}_Quotation_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
         });
     }
+
 });
