@@ -73,7 +73,6 @@ h4 {
 }
 .footer{
     text-align: center;
-    text-decoration: none;
     color: #1b0161;
     position: fixed;
     bottom: 0;
@@ -81,5 +80,11 @@ h4 {
     width: 100%;
     text-align: center;
     padding: 10px 0;
-    font-size: 0.9rem;
+    font-size: 0.6rem;
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    color:
 }
