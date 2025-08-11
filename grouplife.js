@@ -681,4 +681,4 @@ function loadAlternativeQuotationLibraries() {
     
     document.head.appendChild(script1);
 }
-}
+})
