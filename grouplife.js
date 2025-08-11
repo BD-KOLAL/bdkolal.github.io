@@ -583,34 +583,101 @@ function loadAlternativePDFLibraries() {
 }
 
     function saveQuotationAsPDF() {
-        const organization = document.getElementById('organization').value || 'GLA_Quotation';
-        
-        // Use html2canvas to capture the quotation preview
-        html2canvas(document.getElementById('quotationPreview')).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgWidth = 210; // A4 width in mm
-            const pageHeight = 295; // A4 height in mm
-            const imgHeight = canvas.height * imgWidth / canvas.width;
-            let heightLeft = imgHeight;
-            let position = 0;
-            
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-            
-            // Add new pages if the content is longer than one page
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-            
-            // Save the PDF
-            pdf.save(`${organization}_Quotation_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
-        });
-    }
+    // Show loading indicator
+    const spinner = document.createElement('div');
+    spinner.className = 'pdf-spinner';
+    document.body.appendChild(spinner);
+    
+    try {
+        // First check if html2canvas is available
+        if (typeof html2canvas !== 'function') {
+            throw new Error('html2canvas library not loaded');
+        }
 
-});
+        const organization = document.getElementById('organization').value || 'GLA_Quotation';
+        const quotationElement = document.getElementById('quotationPreview');
+        
+        // Set higher scale for better quality
+        const options = {
+            scale: 2, // Higher scale for better quality
+            useCORS: true, // Enable cross-origin images
+            allowTaint: true, // Allow tainted images
+            logging: true // Enable logging for debugging
+        };
+
+        html2canvas(quotationElement, options).then(canvas => {
+            try {
+                // Check if jsPDF is available
+                if (!window.jspdf) {
+                    throw new Error('jsPDF library not loaded');
+                }
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                // Add first page
+                pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                heightLeft -= pageHeight;
+
+                // Add additional pages if needed
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= pageHeight;
+                }
+
+                // Save the PDF
+                pdf.save(`${organization}_Quotation_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
+            } catch (error) {
+                console.error('PDF creation error:', error);
+                alert(`PDF creation failed: ${error.message}`);
+            } finally {
+                // Remove loading indicator
+                if (document.body.contains(spinner)) {
+                    document.body.removeChild(spinner);
+                }
+            }
+        }).catch(error => {
+            console.error('Canvas generation error:', error);
+            alert(`Failed to generate quotation image: ${error.message}`);
+            if (document.body.contains(spinner)) {
+                document.body.removeChild(spinner);
+            }
+        });
+
+    } catch (error) {
+        console.error('Initial error:', error);
+        alert(`PDF generation failed: ${error.message}\n\nPlease try refreshing the page.`);
+        if (document.body.contains(spinner)) {
+            document.body.removeChild(spinner);
+        }
+        
+        // If error persists, try alternative CDN
+        if (confirm('PDF generation failed. Try loading alternative libraries?')) {
+            loadAlternativeQuotationLibraries();
+        }
+    }
+}
+
+// Fallback function to load alternative CDN
+function loadAlternativeQuotationLibraries() {
+    const script1 = document.createElement('script');
+    script1.src = 'https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js';
+    
+    const script2 = document.createElement('script');
+    script2.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
+    
+    script1.onload = function() {
+        document.head.appendChild(script2);
+        alert('Alternative libraries loaded. Please try generating PDF again.');
+    };
+    
+    document.head.appendChild(script1);
+}
 
