@@ -471,17 +471,23 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(spinner);
     
     try {
-        // Check if jsPDF is available
-        if (!window.jspdf) {
-            throw new Error('jsPDF library not loaded');
+        // First check if jsPDF is properly loaded
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            throw new Error('jsPDF library not loaded properly');
         }
-        
+
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // Check if autoTable plugin is available
+        // Verify autoTable plugin is available
         if (typeof doc.autoTable !== 'function') {
-            throw new Error('autoTable plugin not loaded');
+            // Try alternative initialization
+            if (window.jspdf.jsPDF.API.autoTable) {
+                // Manually attach if available but not bound
+                doc.autoTable = window.jspdf.jsPDF.API.autoTable;
+            } else {
+                throw new Error('autoTable plugin not loaded');
+            }
         }
 
         const organization = document.getElementById('organization').value || 'GLA_Costing';
@@ -546,11 +552,34 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.save(`${organization}_Costing_${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
     } catch (error) {
         console.error('PDF generation error:', error);
-        alert(`PDF generation failed: ${error.message}. Please ensure all required libraries are loaded.`);
+        alert(`PDF generation failed: ${error.message}\n\nPlease try:\n1. Refreshing the page\n2. Checking your internet connection\n3. Using a different browser`);
+        
+        // If error persists, try alternative CDN
+        if (confirm('PDF generation failed. Try loading alternative libraries?')) {
+            loadAlternativePDFLibraries();
+        }
     } finally {
         // Remove loading indicator
-        document.body.removeChild(spinner);
+        if (document.body.contains(spinner)) {
+            document.body.removeChild(spinner);
+        }
     }
+}
+
+// Fallback function to load alternative CDN
+function loadAlternativePDFLibraries() {
+    const script1 = document.createElement('script');
+    script1.src = 'https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js';
+    
+    const script2 = document.createElement('script');
+    script2.src = 'https://unpkg.com/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js';
+    
+    script1.onload = function() {
+        document.head.appendChild(script2);
+        alert('Alternative libraries loaded. Please try generating PDF again.');
+    };
+    
+    document.head.appendChild(script1);
 }
 
     function saveQuotationAsPDF() {
